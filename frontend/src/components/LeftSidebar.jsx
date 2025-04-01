@@ -13,11 +13,11 @@ import { Button } from './ui/button'
 
 const LeftSidebar = () => {
     const navigate = useNavigate();
-    const { user } = useSelector(store => store.auth);
+    const { user, suggestedUsers } = useSelector(store => store.auth);
     const { likeNotification } = useSelector(store => store.realTimeNotification);
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
-
+    const [followingState, setFollowingState] = useState({}); // Track follow state for each user
 
     const logoutHandler = async () => {
         try {
@@ -48,6 +48,22 @@ const LeftSidebar = () => {
         }
     }
 
+    const followHandler = async (userId) => {
+        try {
+            const res = await axios.post(`https://mediagram-pn8o.onrender.com/api/v1/user/followorunfollow/${userId}`, {}, { withCredentials: true });
+            if (res.data.success) {
+                setFollowingState(prevState => ({
+                    ...prevState,
+                    [userId]: !prevState[userId], // Toggle follow state
+                }));
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to update follow state.");
+        }
+    };
+
     const sidebarItems = [
         { icon: <Home />, text: "Home" },
         { icon: <Search />, text: "Search" },
@@ -65,7 +81,8 @@ const LeftSidebar = () => {
             text: "Profile"
         },
         { icon: <LogOut />, text: "Logout" },
-    ]
+    ];
+
     return (
         <div className='fixed top-0 z-10 left-0 px-4 border-r border-gray-300 w-[16%] h-screen'>
             <div className='flex flex-col'>
@@ -110,12 +127,34 @@ const LeftSidebar = () => {
                         })
                     }
                 </div>
+                <div className='mt-8'>
+                    <h2 className='font-bold text-sm mb-4'>Suggested Users</h2>
+                    {
+                        suggestedUsers.map(suggestedUser => (
+                            <div key={suggestedUser._id} className='flex items-center justify-between mb-4'>
+                                <div className='flex items-center gap-3'>
+                                    <Avatar className='w-10 h-10'>
+                                        <AvatarImage src={suggestedUser.profilePicture} />
+                                        <AvatarFallback>CN</AvatarFallback>
+                                    </Avatar>
+                                    <span>{suggestedUser.username}</span>
+                                </div>
+                                <Button
+                                    size="sm"
+                                    variant={followingState[suggestedUser._id] ? "secondary" : "default"}
+                                    onClick={() => followHandler(suggestedUser._id)}
+                                >
+                                    {followingState[suggestedUser._id] ? "Following" : "Follow"}
+                                </Button>
+                            </div>
+                        ))
+                    }
+                </div>
             </div>
 
             <CreatePost open={open} setOpen={setOpen} />
-
         </div>
     )
 }
 
-export default LeftSidebar
+export default LeftSidebar;
