@@ -11,7 +11,7 @@ import path from "path";
 
 dotenv.config();
 const corsOptions = {
-    origin: "http://localhost:5173", // Make sure this matches frontend URL exactly
+    origin: prosess.env.URL, // Make sure this matches frontend URL exactly
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"], // Allow necessary methods
     allowedHeaders: ["Content-Type", "Authorization"], // Ensure correct headers are allowed
