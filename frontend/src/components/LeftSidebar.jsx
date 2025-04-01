@@ -68,68 +68,64 @@ const LeftSidebar = () => {
   ];
 
   return (
-    <div className="fixed top-0 z-10 left-0 px-4 border-r border-gray-300 w-[16%] h-screen">
-      <div className="flex flex-col">
-        {/* Instagram Logo */}
-        <div className="my-8 pl-3">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
-            alt="Instagram Logo"
-            className="w-24"
-          />
-        </div>
-        <div>
-          {sidebarItems.map((item, index) => {
-            return (
-              <div
-                onClick={() => !item.disabled && sidebarHandler(item.text)}
-                key={index}
-                className={`flex items-center gap-3 relative rounded-lg p-3 my-3 ${
-                  item.disabled
-                    ? 'text-gray-400 cursor-not-allowed'
-                    : 'hover:bg-gray-100 cursor-pointer'
-                }`}
-              >
-                {item.icon}
-                <span>{item.text}</span>
-                {item.text === 'Notifications' && likeNotification.length > 0 && (
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        size="icon"
-                        className="rounded-full h-5 w-5 bg-red-600 hover:bg-red-600 absolute bottom-6 left-6"
-                      >
-                        {likeNotification.length}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                      <div>
-                        {likeNotification.length === 0 ? (
-                          <p>No new notification</p>
-                        ) : (
-                          likeNotification.map((notification) => {
-                            return (
-                              <div key={notification.userId} className="flex items-center gap-2 my-2">
-                                <Avatar>
-                                  <AvatarImage src={notification.userDetails?.profilePicture} />
-                                  <AvatarFallback>CN</AvatarFallback>
-                                </Avatar>
-                                <p className="text-sm">
-                                  <span className="font-bold">{notification.userDetails?.username}</span> liked your
-                                  post
-                                </p>
-                              </div>
-                            );
-                          })
-                        )}
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                )}
-              </div>
-            );
-          })}
-        </div>
+    <div className="fixed top-0 left-0 h-screen w-[20%] bg-white border-r border-gray-200 flex flex-col items-center py-6">
+      {/* Instagram Logo */}
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
+        alt="Instagram Logo"
+        className="w-16 mb-8"
+      />
+
+      {/* Sidebar Items */}
+      <div className="flex flex-col gap-6 w-full">
+        {sidebarItems.map((item, index) => (
+          <div
+            key={index}
+            onClick={() => !item.disabled && sidebarHandler(item.text)}
+            className={`flex items-center gap-4 px-4 py-2 rounded-lg ${
+              item.disabled
+                ? 'text-gray-400 cursor-not-allowed'
+                : 'hover:bg-gray-100 cursor-pointer'
+            }`}
+          >
+            {item.icon}
+            <span className="text-lg font-medium">{item.text}</span>
+            {item.text === 'Notifications' && likeNotification.length > 0 && (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    size="icon"
+                    className="rounded-full h-5 w-5 bg-red-600 hover:bg-red-600 absolute bottom-6 left-6"
+                  >
+                    {likeNotification.length}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <div>
+                    {likeNotification.length === 0 ? (
+                      <p>No new notification</p>
+                    ) : (
+                      likeNotification.map((notification) => {
+                        return (
+                          <div key={notification.userId} className="flex items-center gap-2 my-2">
+                            <Avatar>
+                              <AvatarImage src={notification.userDetails?.profilePicture} />
+                              <AvatarFallback>CN</AvatarFallback>
+                            </Avatar>
+                            <p className="text-sm">
+                              <span className="font-bold">{notification.userDetails?.username}</span> liked your
+                              post
+                            </p>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
+          </div>
+        ))}
       </div>
 
       <CreatePost open={open} setOpen={setOpen} />

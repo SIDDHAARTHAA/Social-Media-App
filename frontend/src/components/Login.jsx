@@ -55,47 +55,43 @@ const Login = () => {
         }
     },[])
     return (
-        <div className='flex items-center w-screen h-screen justify-center'>
-            <form onSubmit={signupHandler} className='shadow-lg flex flex-col gap-5 p-8'>
-                <div className='my-4'>
-                    <h1 className='text-center font-bold text-xl'>LOGO</h1>
-                    <p className='text-sm text-center'>Login to see photos & videos from your friends</p>
-                </div>
-                <div>
-                    <span className='font-medium'>Email</span>
+        <div className="flex items-center justify-center min-h-screen bg-gray-50">
+            <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-8 w-[400px]">
+                <h1 className="text-2xl font-bold text-center mb-6">Instagram</h1>
+                <form onSubmit={signupHandler} className="flex flex-col gap-4">
                     <Input
                         type="email"
                         name="email"
                         value={input.email}
                         onChange={changeEventHandler}
+                        placeholder="Email"
                         className="focus-visible:ring-transparent my-2"
                     />
-                </div>
-                <div>
-                    <span className='font-medium'>Password</span>
                     <Input
                         type="password"
                         name="password"
                         value={input.password}
                         onChange={changeEventHandler}
+                        placeholder="Password"
                         className="focus-visible:ring-transparent my-2"
                     />
-                </div>
-                {
-                    loading ? (
-                        <Button>
-                            <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                            Please wait
-                        </Button>
-                    ) : (
-                        <Button type='submit'>Login</Button>
-                    )
-                }
-
-                <span className='text-center'>Dosent have an account? <Link to="/signup" className='text-blue-600'>Signup</Link></span>
-            </form>
+                    {
+                        loading ? (
+                            <Button>
+                                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                                Please wait
+                            </Button>
+                        ) : (
+                            <Button type='submit' className="bg-blue-500 text-white w-full">Login</Button>
+                        )
+                    }
+                </form>
+                <p className="text-center text-sm text-gray-600 mt-4">
+                    Don't have an account? <Link to="/signup" className="text-blue-500">Sign up</Link>
+                </p>
+            </div>
         </div>
     )
 }
 
-export default Login
+export default Login;
