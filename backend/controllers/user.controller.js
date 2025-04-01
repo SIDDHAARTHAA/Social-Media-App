@@ -8,32 +8,36 @@ export const register = async (req, res) => {
     try {
         const { username, email, password } = req.body;
         if (!username || !email || !password) {
-            return res.status(401).json({
+            return res.status(400).json({
                 message: "Something is missing, please check!",
                 success: false,
             });
         }
         const user = await User.findOne({ email });
         if (user) {
-            return res.status(401).json({
-                message: "Try different email",
+            return res.status(400).json({
+                message: "Try a different email",
                 success: false,
             });
-        };
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
         await User.create({
             username,
             email,
-            password: hashedPassword
+            password: hashedPassword,
         });
         return res.status(201).json({
             message: "Account created successfully.",
             success: true,
         });
     } catch (error) {
-        console.log(error);
+        console.error(error);
+        return res.status(500).json({
+            message: "An error occurred while creating the account.",
+            success: false,
+        });
     }
-}
+};
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
