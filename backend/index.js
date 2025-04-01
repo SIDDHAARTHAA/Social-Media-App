@@ -11,7 +11,7 @@ import path from "path";
 
 dotenv.config();
 const corsOptions = {
-    origin: prosess.env.URL, // Make sure this matches frontend URL exactly
+    origin: process.env.URL, // Make sure this matches frontend URL exactly
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"], // Allow necessary methods
     allowedHeaders: ["Content-Type", "Authorization"], // Ensure correct headers are allowed
